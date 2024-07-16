@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-
 """Procedure to build a reproducible research dataset which is compatible with FacsimiLab and YODA philosophy.
 
 This procedure assumes a clean dataset that was just created by
 `datalad create`.
 """
-#%%
+#%% Import libraries
 import os
 import sys
 import shutil
@@ -16,28 +15,27 @@ import re
 import datalad.api as dl
 from datalad.distribution.dataset import require_dataset
 
-print(f"sys.arg: {sys.argv[1]}")
 
-subdataset_name = sys.argv[1]
+#%% Get the dataset name from the user input
+dataset_name = sys.argv[1]
+print(f"Creating a dataset: {dataset_name}")
 
-#%%
+#%% Check the status of the dataset
 ds = require_dataset(
-    subdataset_name,
+    dataset_name,
     check_installed = True,
     purpose = 'Reproducible research with FacsimiLab'
 )
-#%%
+#%% Download the template
 current_dataset_name = os.path.basename(ds.path)
-
 print(f"Current dataset: {current_dataset_name}")
 
 
 dl.clone("https://github.com/FacsimiLab/project-template.git", path="./tmp-template")
-# %%
+#%% Append the template's datalad config to the newly created dataset
 
 # Remove the datalad UUID from the template
 file_path = os.path.join('tmp-template', '.datalad', 'config')
-
 
 # Define the regex pattern
 pattern = re.compile(r'\[datalad "dataset"\]\n\sid = \S*$\n', re.MULTILINE)
@@ -51,7 +49,6 @@ with open(file_path, 'r+') as file:
     file.truncate()
 
 # Migrate the datalad config
-
 new_subdataset_config_path = '.datalad/config'
 template_config_path = 'tmp-template/.datalad/config'
 
@@ -63,13 +60,12 @@ with open(template_config_path, 'r') as template_config:
 with open(new_subdataset_config_path, 'a') as new_subdataset_config:
     new_subdataset_config.write('\n' + content_to_append)
 
+# Delete the template's config file (we will be copying the entire directory later and do not want to overwrite the original)
 os.remove(template_config_path)
 
 print("Datalad config appended successfully from template.")
 
-
-
-#%% move files
+#%% Move files from the temp folder to the newly created dataset
 
 print("Moving Facsimilab Template files into the new dataset")
 
@@ -85,14 +81,10 @@ for item in os.listdir(template_dir):
     # Move the item to the destination directory
     shutil.move(item_path, destination_path)
 
-
+#%% Cleanup
 print("Cleanup")
 shutil.rmtree("./tmp-template")
 
+dl.save(".", message="Applied a FacsimiLab project template to the dataset")
+
 print("Run procedure completed.")
-
-# # #%%
-
-# # dl.create(
-# #     path=
-# # )
