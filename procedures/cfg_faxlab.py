@@ -48,15 +48,15 @@ with open(file_path, 'r+') as file:
     file.write(new_content)
     file.truncate()
 
-# Migrate the datalad config
+# Current and template dataset conflig paths
 new_subdataset_config_path = '.datalad/config'
 template_config_path = 'tmp-template/.datalad/config'
 
-# Read the content from the second file
+# Read the content from the template config
 with open(template_config_path, 'r') as template_config:
     content_to_append = template_config.read()
 
-# Append the content to the first file
+# Apply the template configuration to the current dataset
 with open(new_subdataset_config_path, 'a') as new_subdataset_config:
     new_subdataset_config.write('\n' + content_to_append)
 
@@ -84,6 +84,7 @@ for item in os.listdir(template_dir):
 #%% Cleanup
 print("Cleanup")
 shutil.rmtree("./tmp-template")
+shutil.rmtree("./.datalad/.datalad")
 
 dl.save(".", message="Applied a FacsimiLab project template to the dataset")
 

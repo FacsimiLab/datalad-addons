@@ -9,14 +9,10 @@ This repository contains addons designed to improve `datalad` functionality thro
 
 Run the file `setup.py` to install the FacsimiLab addons for datalad. Note, you will need to be in a python environment which has `datalad` installed already.
 
-If you are using a `conda` python environment (e.g. [facsimilab](https://github.com/FacsimiLab/facsimilab-platform/blob/main/docker/full/environment.yml)) or the dockerized version of this environment available in the container `ghcr.io/pranavmishra90/facsimilab-full`, you can activate the environment with:
+If you are using a `conda` python environment (e.g. [facsimilab](https://github.com/FacsimiLab/facsimilab-platform/blob/main/docker/full/environment.yml)) or the dockerized version of this environment available in the container `docker.io/pranavmishra90/facsimilab-full`, you can activate the environment with:
 
 ```sh
 conda activate facsimilab
-
-## or
-
-micromamba activate facsimilab
 ```
 
 Then install the addons with
