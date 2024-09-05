@@ -1,10 +1,8 @@
-#!/usr/bin/env python3
+# """Procedure to build a reproducible research dataset which is compatible with FacsimiLab and YODA philosophy.
 
-"""Procedure to build a reproducible research dataset which is compatible with FacsimiLab and YODA philosophy.
-
-This procedure assumes a clean dataset that was just created by
-`datalad create`.
-"""
+# This procedure assumes a clean dataset that was just created by
+# `datalad create`.
+# """
 #%% Import libraries
 import os
 import sys
